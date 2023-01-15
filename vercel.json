@@ -1,7 +1,5 @@
 {
     "functions": {
-        "timeout": {
-            "duration": "60s"
-        }
+        "timeout": "60s"
     }
 }
