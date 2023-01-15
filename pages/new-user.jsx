@@ -50,6 +50,7 @@ const newUser = () => {
         realName: name,
         surname,
         bio,
+        isAdmin: false,
         hasCompletedLogin: true,
       };
 

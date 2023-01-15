@@ -9,6 +9,7 @@ const Navbar = () => {
     const { data: session, status } = useSession();
     const [user, setUser] = useState(null)
     const [showDropdown, setShowDropdown] = useState(false)
+    const [showSidebar, setShowSidebar] = useState(false)
 
     function isMobileFunction() {
         if (typeof window !== "undefined")
@@ -52,48 +53,53 @@ const Navbar = () => {
     const router = useRouter()
 
     return (
-        <div className='navbar z-50 w-full h-20 primary-theme drop-shadow-lg relative grid items-center'>
-            <div className='w-full h-full flex justify-center items-center relative'>
-                <button className={`burger-button ${isActive ? 'is-active': ''}`} onClick={() => setIsActive(!isActive)}>
-                    <span className="burger-line"></span>
-                    <span className="burger-line"></span>
-                    <span className="burger-line"></span>
-                </button>
+        <nav>
+            <div className='navbar z-50 w-full h-20 primary-theme drop-shadow-lg relative grid items-center'>
+                <div className='w-full h-full flex justify-center items-center relative'>
+                    <button className={`burger-button ${isActive ? 'is-active' : ''}`} onClick={() => { setIsActive(!isActive); setShowSidebar(!showSidebar) }}>
+                        <span className="burger-line"></span>
+                        <span className="burger-line"></span>
+                        <span className="burger-line"></span>
+                    </button>
 
-            </div>
-            <div className='w-full h-full flex justify-center items-center'>
-                <div className='relative w-full h-4/6'>
-                    <Image alt='logo' src={icon} fill='responsive' className='drop-shadow-lg' />
                 </div>
-            </div>
-            {!isMobile && (
-                <>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </>
-            )}
-            <div className='w-full h-full relative flex justify-center items-center'>
-                <div onClick={() => setShowDropdown(!showDropdown)} className='absolute w-16 h-16 rounded-full overflow-hidden cursor-pointer transition duration-300'>
-                    {session && (
-                        <Image src={session.user.image} alt='user logo' fill='responsive' />
+                <div className='w-full h-full flex justify-center items-center'>
+                    <div className='relative w-full h-4/6'>
+                        <Image alt='logo' src={icon} fill='responsive' className='drop-shadow-lg' />
+                    </div>
+                </div>
+                {!isMobile && (
+                    <>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </>
+                )}
+                <div className='w-full h-full relative flex justify-center items-center'>
+                    <div onClick={() => setShowDropdown(!showDropdown)} className='absolute w-16 h-16 rounded-full overflow-hidden cursor-pointer transition duration-300'>
+                        {session && (
+                            <Image src={session.user.image} alt='user logo' fill='responsive' />
+                        )}
+                    </div>
+                    {showDropdown && (
+                        <div className='w-full primary-theme top-20 right-0 absolute flex flex-col justify-center items-center gap-y-2 font-semibold text-lg cursor-pointer'>
+                            <div className='primary-theme btn w-full h-full text-center'>Profilo</div>
+                            <div className='primary-theme btn w-full h-full text-center'>Impostazioni</div>
+                            <div className='primary-theme btn w-full h-full text-center'>Tutorial</div>
+                            <div onClick={() => signOut()} className='primary-theme btn w-full h-full text-center'>Log Out</div>                            
+                        </div>
+
                     )}
                 </div>
-                {showDropdown && (
-                    <div className='w-full primary-theme top-20 right-0 absolute flex flex-col justify-center items-center gap-y-2 font-semibold text-lg cursor-pointer'>
-                        <div className='primary-theme btn w-full h-full text-center'>Profilo</div>
-                        <div className='primary-theme btn w-full h-full text-center'>Impostazioni</div>
-                        <div className='primary-theme btn w-full h-full text-center'>Tutorial</div>
-                        <div onClick={() => signOut()} className='primary-theme btn w-full h-full text-center'>Log Out</div>                            
-                    </div>
-
-                )}
             </div>
-        </div>
+            <div className={`${showSidebar ? '' : 'translate'} absolute primary-theme top-20 bottom-0 w-3/12 flex flex-col items-center justify-center text-center`}>
+                <div className='w-full h-full primary-theme btn flex items-center justify-center font-bold text-3xl'>Dashboard</div>
+            </div>    
+        </nav>
     )
 }
 
