@@ -24,7 +24,7 @@ test.describe('emulate different viewport sizes', () => {
         width,
       })
 
-      await page.goto(process.env.ENVIRONMENT_URL || 'https://www.checklyhq.com/')
+      await page.goto(process.env.ENVIRONMENT_URL || 'https://www.linguaboost.vercel.app/')
 
       await page.screenshot({
         path: `${name}.png`,
