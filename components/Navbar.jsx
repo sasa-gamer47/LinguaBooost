@@ -98,6 +98,7 @@ const Navbar = () => {
             </div>
             <div className={`${showSidebar ? '' : 'translate'} absolute primary-theme top-20 bottom-0 w-3/12 flex flex-col items-center justify-center text-center`}>
                 <div className='w-full h-full primary-theme btn flex items-center justify-center font-bold text-3xl'>Dashboard</div>
+                <div className='w-full h-full primary-theme btn flex items-center justify-center font-bold text-3xl'>Dashboard</div>
             </div>    
         </nav>
     )
