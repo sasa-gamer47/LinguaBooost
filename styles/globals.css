@@ -45,3 +45,43 @@
 .burger-button.is-active .burger-line:nth-of-type(3) {
     transform: rotate(-45deg) translate(5px, -5px);
 }
+
+.navbar {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+/* themes imposition */
+
+.primary-theme {
+    background: hsl(198, 93%, 60%);
+    color: #fff;
+}
+
+.primary-theme {
+    transition: all .3s ease;
+}
+
+.primary-theme.btn:hover {
+    background: hsl(198, 93%, 55%);
+}
+
+.primary-theme.light {
+    background: hsl(198, 93%, 70%);
+    color: #fff;
+}
+
+.primary-theme.light:hover {
+    background: hsl(198, 93%, 65%);
+}
+
+.primary-theme.dark {
+    background: hsl(198, 93%, 50%);
+    color: #fff;
+}
