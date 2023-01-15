@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, use } from 'react'
 import Image from 'next/image'
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import icon from '../img/icon.png'
 import { useRouter } from 'next/router';
 
@@ -83,6 +83,9 @@ const Navbar = () => {
                     <div onClick={() => setShowDropdown(!showDropdown)} className='absolute w-16 h-16 rounded-full overflow-hidden cursor-pointer transition duration-300'>
                         {session && (
                             <Image src={session.user.image} alt='user logo' fill='responsive' />
+                        )}
+                        {!session && (
+                            <button onClick={() => signIn()} className='w-full h-full primary-theme light btn'>Log In</button>
                         )}
                     </div>
                     {showDropdown && (
