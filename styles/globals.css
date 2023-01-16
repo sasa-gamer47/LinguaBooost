@@ -57,12 +57,26 @@
     }
 }
 
+body {
+    background: hsl(198, 93%, 70%);
+}
 
 .translate {
-    translate: -100%;
+    translate: -200%;
     transition: all .3s ease-in;
 }
 
+.wrong {
+    background: hsl(0, 100%, 39%) !important;
+}
+
+.correct {
+    background: hsl(113, 100%, 51%) !important;
+}
+
+.answered {
+    background: hsla(0, 0%, 0%, 0.1) !important;
+}
 /* themes imposition */
 
 .primary-theme {
@@ -76,6 +90,7 @@
 
 .primary-theme.btn:hover {
     background: hsl(198, 93%, 55%);
+    cursor: pointer;
 }
 
 .primary-theme.light {

@@ -24,11 +24,47 @@ const Home = () => {
             }
             getUser();
         }
-    }, [status]);
+    
+    
+  }, [status]);
+  
+  if (user) {
+    console.log({
+      createdBy: user._id,
+      createdAt: new Date(),
+      questions: [
+        {
+          question: "Quanto fa 1 + 1",
+          answers: [1, 2, 3, 4],
+          correctAnswers: 1,
+          answerType: "singleSelection",
+        },
+      ],
+      usersWhoPlayed: ["63c3d2058bc04ccefe54b1f7"],
+      results: [
+        {
+          user: "63c3d2058bc04ccefe54b1f7",
+          answersGiven: 1,
+          questionsCount: 1,
+          correctAnswersCount: 0,
+          correctAnswersPercentage: 0,
+          corrections: [
+            {
+              question: "Quanto fa 1 + 1",
+              answer: 2,
+            },
+          ],
+        },
+      ],
+    });
+  }
 
   return (
     <div className="w-full h-full m-0 p-0">
-      <div className='absolute bottom-10 right-10 w-20 h-20 text-7xl drop-shadow-lg font-extrabold flex items-center justify-center cursor-pointer primary-theme btn rounded-full'>+</div>
+      {user && user.isAdmin && (
+          <div className='absolute bottom-10 right-10 w-20 h-20 text-7xl drop-shadow-lg font-extrabold flex items-center justify-center cursor-pointer primary-theme btn rounded-full z-40'>+</div>
+      )}
+      {/* <div className='fixed top-24 bottom-10 left-5 right-5 rounded-lg drop-shadow-lg sm:left-1/4 sm:right-1/4 primary-theme z-40'></div> */}
     </div>
   )
 }

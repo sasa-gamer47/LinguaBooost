@@ -19,7 +19,7 @@ const Navbar = () => {
     }
 
     async function getUserByEmail(email) {
-        const res = await fetch(`api/user/email/${email}`);
+        const res = await fetch(`/api/user/email/${email}`);
         const data = await res.json();
 
         return data.data[0];
@@ -80,9 +80,9 @@ const Navbar = () => {
                     </>
                 )}
                 <div className='w-full h-full relative flex justify-center items-center'>
-                    <div onClick={() => setShowDropdown(!showDropdown)} className='absolute w-16 h-16 rounded-full overflow-hidden cursor-pointer transition duration-300'>
+                    <div className='absolute w-16 h-16 rounded-full overflow-hidden cursor-pointer transition duration-300'>
                         {session && (
-                            <Image src={session.user.image} alt='user logo' fill='responsive' />
+                            <Image onClick={() => setShowDropdown(!showDropdown)} src={session.user.image} alt='user logo' fill='responsive' />
                         )}
                         {!session && (
                             <button onClick={() => signIn()} className='w-full h-full primary-theme light btn'>Log In</button>
@@ -99,7 +99,7 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
-            <div className={`${showSidebar ? '' : 'translate'} absolute primary-theme top-20 bottom-0 w-3/12 flex flex-col items-center justify-center text-center`}>
+            <div className={`${showSidebar ? '' : 'translate'} absolute primary-theme top-20 bottom-0 w-3/12 flex flex-col items-center justify-center text-center z-40`}>
                 <div className='w-full h-full primary-theme btn flex items-center justify-center font-bold text-3xl'>Dashboard</div>
             </div>    
         </nav>
