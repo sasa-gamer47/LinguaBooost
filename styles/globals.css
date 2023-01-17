@@ -106,3 +106,43 @@ body {
     background: hsl(198, 93%, 50%);
     color: #fff;
 }
+
+/* 
+if (!quizFinished) {
+                                                setCurrentQuestion(question.question)
+                                                if (question.answerType === 'singleSelection') {
+                                                    if (givenAnswers.find(answers => answers.question == question.question)) {
+                                                        const currentIndex = givenAnswers.indexOf(givenAnswers.find(answers => answers.question == question.question))
+                                                        givenAnswers[currentIndex].selectedAnswer = e.target.textContent
+                                                    } else {
+                                                        setGivenAnswers([...givenAnswers, { question: question.question, selectedAnswer: e.target.textContent, correctAnswer: question.correctAnswer }])
+                                                    }
+                                                    e.target.parentElement.childNodes.forEach(answer => {
+                                                        answer.classList.remove('answered')
+                                                    })
+                                                    e.target.classList.add('answered')
+                                                } else if (question.answerType === 'multipleSelection') {
+
+                                                    // console.log(currentSelectedAnswers.length, question.correctAnswers.length);
+                                                    // console.log(currentSelectedAnswers.length >= question.correctAnswers.length);
+                                                    
+                                                    if (currentSelectedAnswers.length < question.correctAnswers.length) {
+                                                        setCurrentSelectedAnswers([...currentSelectedAnswers, e.target.textContent])
+                                                        // currentSelectedAnswers.push(e.target.textContent)
+                                                    } else {
+                                                        console.log('splicing');
+                                                        setCurrentSelectedAnswers([...currentSelectedAnswers, currentSelectedAnswers.splice(0, 1, e.target.textContent)])
+                                                    }
+
+                                                    if (givenAnswers.find(answers => answers.question == question.question)) {
+                                                        const currentIndex = givenAnswers.indexOf(givenAnswers.find(answers => answers.question == question.question))
+                                                        givenAnswers[currentIndex].selectedAnswers = currentSelectedAnswers
+                                                    } else {
+                                                        setGivenAnswers([...givenAnswers, { question: question.question, selectedAnswers: currentSelectedAnswers, correctAnswers: question.correctAnswers }])
+                                                    }
+                                                    
+                                                    console.log(currentSelectedAnswers);
+                                                }
+
+                                            }
+*/
