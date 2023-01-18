@@ -14,10 +14,12 @@ const quiz = ({ quizId }) => {
     const [corrections, setCorrections] = useState([])
     const [currentQuestion, setCurrentQuestion] = useState(null)
     const [previousQuestion, setPreviousQuestion] = useState(null)
-    // let currentSelectedAnswers = []
+    let CurrentSelectedAnswers = []
     const [currentSelectedAnswers, setCurrentSelectedAnswers] = useState([]);
     const [tempSelectedAnswers, setTempSelectedAnswers] = useState([]);
     const [tempCorrectAnswersCount, setTempCorrectAnswersCount] = useState(0)
+    const [multipleAnswers, setMultipleAnswers] = useState([])
+    
 
     async function getQuiz() {
         const res = await fetch(`/api/quiz/${quizId}`)
@@ -65,7 +67,9 @@ const quiz = ({ quizId }) => {
 
         if (currentQuestion !== previousQuestion) {
             // console.log('resetted');
+            console.log(tempSelectedAnswers);
             setPreviousQuestion(currentQuestion)
+            setTempSelectedAnswers([])
         } else {
             setTempSelectedAnswers([])
             
@@ -77,6 +81,7 @@ const quiz = ({ quizId }) => {
     useEffect(() => {
         // console.log('answers: ', tempSelectedAnswers);
         setCurrentSelectedAnswers(tempSelectedAnswers)
+        console.log(multipleAnswers);
     }, [tempSelectedAnswers])
 
 
@@ -87,11 +92,11 @@ const quiz = ({ quizId }) => {
                     return (
                         <div key={indexKey} className='w-11/12 rounded-lg drop-shadow-lg primary-theme flex flex-col items-center justify-center'>
                             <div className='text-3xl font-bold text-center'>{question.question}</div>
-                            <div className='primary-theme p-4 dark h-full w-11/12 mt-4 grid grid-cols-2 grid-rows-2 gap-3 gap-y-4 rounded-lg mb-8'>
-                                {question.answers.map((answer, index) => {
+                            <div className={`primary-theme dark h-full w-11/12 mt-4 ${question.answerType === "freeAnswer" ? 'p-2' : 'grid grid-cols-2 grid-rows-2 gap-3 gap-y-4 p-4'} rounded-lg mb-8`}>
+                                {question.answerType !== "freeAnswer" && question.answers.map((answer, index) => {
                                     return (
                                         <div key={index} onClick={(e) => {
-
+                                            
 
                                             if (!quizFinished) {
                                                 setCurrentQuestion(question.question)
@@ -107,6 +112,7 @@ const quiz = ({ quizId }) => {
                                                     })
                                                     e.target.classList.add('answered')
                                                 } else if (question.answerType === 'multipleSelection') {
+                                                    
                                                     setCurrentSelectedAnswers(tempSelectedAnswers)
                                                     // console.log(currentSelectedAnswers.length, question.correctAnswers.length);
                                                     // console.log(currentSelectedAnswers.length >= question.correctAnswers.length);
@@ -114,7 +120,20 @@ const quiz = ({ quizId }) => {
                                                     if (tempSelectedAnswers.length < question.correctAnswers.length) {
                                                         e.target.classList.add('answered')
                                                         // currentSelectedAnswers.push(e.target.textContent)
+                                                        CurrentSelectedAnswers.push(e.target.textContent)
+
+                                                        // if (multipleAnswers.find(answer => question.question == answer.question)) {
+                                                        //     if (multipleAnswers.find(answer => answer.answer == e.target.textContent)) {
+
+                                                        //         console.log(answer);
+                                                        //     } else {
+                                                        //     }
+                                                        // } else {
+                                                            
+                                                        // }
+                                                        setMultipleAnswers([...multipleAnswers, { question: question.question, answer: e.target.textContent }])
                                                         setTempSelectedAnswers([...tempSelectedAnswers, e.target.textContent])
+                                                        console.log('currentSelectedAnswers: ', currentSelectedAnswers);
                                                     } else {
                                                         if (e.target.classList.contains('answered')) {
                                                             e.target.classList.remove('answered')
@@ -129,11 +148,40 @@ const quiz = ({ quizId }) => {
                                                         }
                                                     }
 
+                                                    let currentAnswers = []
+
                                                     if (givenAnswers.find(answers => answers.question == question.question)) {
                                                         const currentIndex = givenAnswers.indexOf(givenAnswers.find(answers => answers.question == question.question))
-                                                        givenAnswers[currentIndex].selectedAnswers = [...tempSelectedAnswers, e.target.textContent]
+                                                        let test = []
+                                                        multipleAnswers.map((answer, index) => {
+                                                            console.log(answer.question, question.question);
+                                                            if (answer.question == question.question) {
+                                                                // console.log('found');
+                                                                // test.push(answer.answer)
+                                                                // console.log('test: ', test);
+
+                                                                currentAnswers.splice(currentAnswers.indexOf(answer.answer), 1)
+                                                                currentAnswers.push(answer.answer)
+                                                            }
+                                                        })
+                                                        givenAnswers[currentIndex].selectedAnswers = [...currentAnswers, e.target.textContent]
+                                                        // console.log('currentAnswers: ', currentAnswers); 
                                                     } else {
-                                                        setGivenAnswers([...givenAnswers, { question: question.question, selectedAnswers: [...tempSelectedAnswers, e.target.textContent], correctAnswers: question.correctAnswers, answerType: question.answerType, index: indexKey }])
+
+                                                        let test = []
+                                                        multipleAnswers.map((answer, index) => {
+                                                            console.log(answer.question, question.question);
+                                                            if (answer.question == question.question) {
+                                                                // console.log('found');
+                                                                // test.push(answer.answer)
+                                                                // console.log('test: ', test);
+                                                                currentAnswers.splice(currentAnswers.indexOf(answer.answer), 1)
+                                                                currentAnswers.push(answer.answer)
+
+                                                            }
+                                                        })
+                                                            
+                                                        setGivenAnswers([...givenAnswers, { question: question.question, selectedAnswers: [...currentAnswers, e.target.textContent], correctAnswers: question.correctAnswers, answerType: question.answerType, index: indexKey }])
                                                     }
                                                     
                                                     // console.log(tempSelectedAnswers);
@@ -143,6 +191,16 @@ const quiz = ({ quizId }) => {
                                         }} className='w-full h-full primary-theme btn p-2 px-4 rounded-lg drop-shadow-lg font-semibold text-xl text-center'>{answer}</div>
                                     )
                                 })}
+                                {question.answerType === "freeAnswer" && (
+                                    <textarea onInput={(e) => {
+                                        if (givenAnswers.find(answers => answers.question == question.question)) {
+                                            const currentIndex = givenAnswers.indexOf(givenAnswers.find(answers => answers.question == question.question))
+                                            givenAnswers[currentIndex].selectedAnswer = e.target.textContent
+                                        } else {
+                                            setGivenAnswers([...givenAnswers, { question: question.question, enteredAnswer: e.target.value, correctAnswer: question.correctAnswer, answerType: question.answerType, index: indexKey, toReview: question.toReview }])
+                                        }
+                                    }} className='primary-theme light w-full h-full resize-none rounded-lg outline-none p-2' placeholder='Inserisci la tua risposta...' name="" id="" cols="30" rows="10"></textarea>
+                                )}
                             </div>
                         </div>
                         )
@@ -260,6 +318,30 @@ const quiz = ({ quizId }) => {
                                     }
                                 }
 
+                            } else if (answer.answerType === 'freeAnswer') {
+                                const correct = answer.enteredAnswer == answer.correctAnswer;
+
+                                if (!correct) {
+                                        tempCorrections.push({ question: answer.question, correctAnswer: answer.correctAnswer, enteredAnswer: answer.enteredAnswer, answerType: answer.answerType, toReview: answer.toReview })
+                                    
+                                }
+
+
+                                correct
+                                    ? setCorrectAnswersCount((prevState) => prevState + 1)
+                                    : "";
+
+                                quizRef.current.childNodes[answer.index].childNodes[1].childNodes.forEach((answerElement) => {
+                                    if (answerElement.textContent == answer.correctAnswer) {
+                                        answerElement.classList.remove("answered");
+                                        answerElement.classList.add("correct");
+                                    } else {
+                                        answerElement.classList.remove("answered");
+                                        if (!correct) {
+                                        answerElement.classList.add("wrong");
+                                        }
+                                    }
+                                });
                             }
 
 
